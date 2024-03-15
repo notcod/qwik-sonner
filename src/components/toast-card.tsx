@@ -16,7 +16,7 @@ type ToastCardState = {
 };
 
 export const Toast = component$((props: ToastProps) => {
-  const percent = useSignal(0);
+  const percent = useSignal(100);
   const state = useStore<ToastCardState>({
     mounted: false,
     removed: false,
@@ -139,10 +139,14 @@ export const Toast = component$((props: ToastProps) => {
     const startTimer = () => {
       closeTimerStartTimeRef.value = new Date().getTime();
 
-      intervalId = setInterval(() => {
-        const elapsedTime = new Date().getTime() - closeTimerStartTimeRef.value;
-        percent.value = 102 - (1 - elapsedTime / duration.value) * 100;
-      }, duration.value / 50);
+      const callEveryX = duration.value / 50;
+      intervalId = setInterval(
+        () => {
+          const elapsedTime = new Date().getTime() - closeTimerStartTimeRef.value;
+          percent.value = (0.98 - elapsedTime / duration.value) * 100;
+        },
+        callEveryX > 1000 ? 1000 : callEveryX,
+      );
 
       // Let the toast know it has started
       timeoutId = setTimeout(() => {
@@ -185,17 +189,15 @@ export const Toast = component$((props: ToastProps) => {
       position: absolute;
       bottom: 0;
       left: 0;
-        width: 100%;
-        height: 5px;
-        background: #f2f2f2;
-        border-radius: 0 0 5px 5px;
+      width: 100%;
+      height: 5px;
+      background: #f2f2f2;
+      border-radius: 0 0 5px 5px;
     }
     .loading{
       width: 100%;
       height: 5px;
       width: 0;
-      background: red;
-      opacity:.7;
       transition: width 0.5s;
       border-radius: 0 0 0 5px; 
     }
@@ -377,9 +379,12 @@ export const Toast = component$((props: ToastProps) => {
               {props.toast.action.label}
             </button>
           )}
-          <div class="pre-loading">
-            <div class="loading" style={` width:${percent.value}%; `} />
-          </div>
+
+          {props.progressBar && (
+            <div class="pre-loading">
+              <div class="loading" style={` width:${percent.value}%; background: ${props.progressBarColor || 'black'}`} />
+            </div>
+          )}
         </Fragment>
       )}
     </li>

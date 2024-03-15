@@ -286,6 +286,8 @@ export const Toaster = component$<ToasterProps>((props) => {
                   index={index}
                   toast={toast}
                   duration={toastOptions?.duration ?? duration}
+                  progressBar={toastOptions?.progressBar}
+                  progressBarColor={toastOptions?.progressBarColor}
                   // eslint-disable-next-line qwik/no-react-props
                   className={toastOptions?.className}
                   descriptionClassName={toastOptions?.descriptionClassName}

@@ -74,6 +74,8 @@ interface ToastOptions {
   duration?: number;
   unstyled?: boolean;
   classNames?: ToastClassnames;
+  progressBar?: boolean;
+  progressBarColor?: string;
 }
 
 export interface ToasterProps extends PropsOf<'ol'> {
@@ -124,6 +126,8 @@ export interface ToastProps {
   loadingIcon?: JSXNode;
   classNames?: ToastClassnames;
   closeButtonAriaLabel?: string;
+  progressBar?: boolean;
+  progressBarColor?: string;
 }
 
 export enum SwipeStateTypes {
