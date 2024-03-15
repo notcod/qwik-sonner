@@ -1,21 +1,13 @@
-import type { CSSProperties, JSXNode, PropsOf, QRL } from "@builder.io/qwik";
+import type { CSSProperties, JSXNode, JSXOutput, PropsOf, QRL } from '@builder.io/qwik';
 
-export type ToastTypes =
-  | "normal"
-  | "action"
-  | "success"
-  | "info"
-  | "warning"
-  | "error"
-  | "loading"
-  | "default";
+export type ToastTypes = 'normal' | 'action' | 'success' | 'info' | 'warning' | 'error' | 'loading' | 'default';
 
 export type PromiseT<Data = any> = QRL<() => Promise<Data>>;
 
 export type PromiseData<ToastData = any> = ExternalToast & {
-  loading?: string | JSXNode;
-  success?: string | JSXNode | QRL<(data: ToastData) => JSXNode | string>;
-  error?: string | JSXNode | ((error: any) => JSXNode | string);
+  loading?: string | JSXNode | JSXOutput;
+  success?: string | JSXNode | QRL<(data: ToastData) => JSXNode | string | JSXOutput> | JSXOutput;
+  error?: string | JSXNode | ((error: any) => JSXNode | string | JSXOutput) | JSXOutput;
   finally?: () => void | Promise<void>;
 };
 
@@ -36,13 +28,13 @@ export interface ToastClassnames {
 
 export interface ToastT {
   id: number | string;
-  title?: string | JSXNode;
+  title?: string | JSXNode | JSXOutput;
   type?: ToastTypes;
-  icon?: JSXNode;
-  jsx?: JSXNode;
+  icon?: JSXNode | JSXOutput;
+  jsx?: JSXNode | JSXOutput;
   invert?: boolean;
   dismissible?: boolean;
-  description?: string | JSXNode;
+  description?: string | JSXNode | JSXOutput;
   duration?: number;
   delete?: boolean;
   important?: boolean;
@@ -67,13 +59,7 @@ export interface ToastT {
   position?: Position;
 }
 
-export type Position =
-  | "top-left"
-  | "top-right"
-  | "bottom-left"
-  | "bottom-right"
-  | "top-center"
-  | "bottom-center";
+export type Position = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'top-center' | 'bottom-center';
 export interface HeightT {
   height: number;
   toastId: number | string;
@@ -90,7 +76,7 @@ interface ToastOptions {
   classNames?: ToastClassnames;
 }
 
-export interface ToasterProps extends PropsOf<"ol"> {
+export interface ToasterProps extends PropsOf<'ol'> {
   invert?: boolean;
   theme?: Theme;
   position?: Position;
@@ -104,7 +90,7 @@ export interface ToasterProps extends PropsOf<"ol"> {
   toastOptions?: ToastOptions;
   style?: CSSProperties;
   offset?: string | number;
-  dir?: "rtl" | "ltr" | "auto";
+  dir?: 'rtl' | 'ltr' | 'auto';
   loadingIcon?: JSXNode;
   containerAriaLabel?: string;
 }
@@ -141,21 +127,18 @@ export interface ToastProps {
 }
 
 export enum SwipeStateTypes {
-  SwipedOut = "SwipedOut",
-  SwipedBack = "SwipedBack",
-  NotSwiped = "NotSwiped",
+  SwipedOut = 'SwipedOut',
+  SwipedBack = 'SwipedBack',
+  NotSwiped = 'NotSwiped',
 }
 
-export type Theme = "light" | "dark" | "system";
+export type Theme = 'light' | 'dark' | 'system';
 
 export interface ToastToDismiss {
   id: number | string;
   dismiss: boolean;
 }
 
-export type ExternalToast = Omit<
-  ToastT,
-  "id" | "type" | "jsx" | "delete" | "promise"
-> & {
+export type ExternalToast = Omit<ToastT, 'id' | 'type' | 'jsx' | 'delete' | 'promise'> & {
   id?: number | string;
 };

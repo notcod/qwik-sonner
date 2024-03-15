@@ -1,4 +1,4 @@
-import { JSXNode } from "@builder.io/qwik";
+import { JSXNode, JSXOutput } from "@builder.io/qwik";
 import {
   ExternalToast,
   PromiseData,
@@ -27,10 +27,10 @@ export function createToastState() {
 
   function create(
     data: ExternalToast & {
-      message?: string | JSXNode;
+      message?: string | JSXNode | JSXOutput;
       type?: ToastTypes;
       promise?: PromiseT;
-      jsx?: JSXNode;
+      jsx?: JSXNode | JSXOutput;
     }
   ) {
     const { message, ...rest } = data;
@@ -92,27 +92,27 @@ export function createToastState() {
     return id;
   }
 
-  function message(message: string | JSXNode, data?: ExternalToast) {
+  function message(message: string | JSXNode | JSXOutput, data?: ExternalToast) {
     return create({ ...data, message });
   }
 
-  function error(message: string | JSXNode, data?: ExternalToast) {
+  function error(message: string | JSXNode | JSXOutput, data?: ExternalToast) {
     return create({ ...data, type: "error", message });
   }
 
-  function success(message: string | JSXNode, data?: ExternalToast) {
+  function success(message: string | JSXNode | JSXOutput, data?: ExternalToast) {
     return create({ ...data, type: "success", message });
   }
 
-  function info(message: string | JSXNode, data?: ExternalToast) {
+  function info(message: string | JSXNode | JSXOutput, data?: ExternalToast) {
     return create({ ...data, type: "info", message });
   }
 
-  function warning(message: string | JSXNode, data?: ExternalToast) {
+  function warning(message: string | JSXNode | JSXOutput, data?: ExternalToast) {
     return create({ ...data, type: "warning", message });
   }
 
-  function loading(message: string | JSXNode, data?: ExternalToast) {
+  function loading(message: string | JSXNode | JSXOutput, data?: ExternalToast) {
     return create({ ...data, type: "loading", message });
   }
 
@@ -171,7 +171,7 @@ export function createToastState() {
     return id;
   }
 
-  function custom(jsx: (id: number | string) => JSXNode, data?: ExternalToast) {
+  function custom(jsx: (id: number | string) => JSXNode | JSXOutput, data?: ExternalToast) {
     const id = data?.id || toastsCounter++;
     create({ jsx: jsx(id), id, ...data });
     return { id };
@@ -199,7 +199,7 @@ export function createToastState() {
 export const toastState = createToastState();
 
 // bind this to the toast function
-function toastFunction(message: string | JSXNode, data?: ExternalToast) {
+function toastFunction(message: string | JSXNode | JSXOutput, data?: ExternalToast) {
   return toastState.create({
     message,
     ...data,
